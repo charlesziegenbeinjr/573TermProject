@@ -1,0 +1,19 @@
+digraph ClusteringTree {
+n_0 [label="petal.length <= -1.056
+samples=\150"];
+n_1 [label="1
+samples=\50
+mistakes=\0"];
+n_2 [label="sepal.length <= 0.553
+samples=\100"];
+n_3 [label="0
+samples=\58
+mistakes=\8"];
+n_4 [label="2
+samples=\42
+mistakes=\3"];
+n_0 -> n_1;
+n_0 -> n_2;
+n_2 -> n_3;
+n_2 -> n_4;
+}
