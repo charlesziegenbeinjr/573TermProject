@@ -8,14 +8,10 @@ from ExKMC.Tree import Tree
 from IPython.display import Image
 from sklearn.cluster import KMeans
 
-# from subprocess import PIPE, Popen
-
-# import pyRAPL
-
-# pyRAPL.setup(devices=[pyRAPL.Device.PKG])
+from pyJoules.energy_meter import measure_energy
 
 
-# @pyRAPL.measureit
+@measure_energy
 def main():
     frame = pd.read_csv(r"iris.csv")
 
