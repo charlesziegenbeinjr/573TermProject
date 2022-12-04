@@ -6,19 +6,22 @@ def array_to_binary(inc_list):
     byte_list = [4, 3, 3, 3, 2, 1, 1, 1, 1, 1, 4, 3, 2, 3, 3, 2, 2]
     byte_rep = []
     for i in range(len(inc_list)):
-        print(byte_list[i])
         byte_rep.append(np.binary_repr(inc_list[i], width=byte_list[i]))
     return byte_rep
 
+# potential issue
+
 
 df = pd.read_csv(r"Mental_Health_Cleaned.csv")
-print(array_to_binary(df.iloc[:1]))
+# print(array_to_binary(df.iloc[0]))
+lol = ''.join(map(str, array_to_binary(df.iloc[0])))
+print(lol)
 # final_list = []
 # for i in range(len(df)):
 #     final_list.append(array_to_binary(df.iloc[i]))
 # print(final_list)
-#
 # print("first element", final_list[0])
+# np.savetxt("binary", [['r1c1', 'r1c2'], ['r2c1', 'r2c2']], delimiter=';', fmt='%s')
 
 
 def flatten_list(_2d_list):
