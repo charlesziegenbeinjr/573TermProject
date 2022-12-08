@@ -1,15 +1,17 @@
+import os
+import sys
+
 import numpy as np
 import pandas as pd
 
 from ExplainableKMC import Tree
-# from ExKMC.Tree import Tree
-from IPython.display import Image
+# from IPython.display import Image
 from sklearn.cluster import KMeans
 import time
 import matplotlib.pyplot as plt
 import statistics
-import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning)
+os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+
 
 
 
@@ -18,60 +20,60 @@ def main():
     total_times = []
     k_means_times = []
     exkmc_times = []
-    
-    for i in range(50):
-        start = time.time()
-        frame = pd.read_csv(r"Data/Mental_Health_Cleaned.csv")
 
-        X = frame.drop('MH1', axis=1)
+    if sys.argv[1] is True:
+        for i in range(50):
+            total, kmeans, exkmc = run()
+            total_times.append(total)
+            k_means_times.append(kmeans)
+            exkmc_times.append(exkmc)
+        plot(total_times,k_means_times,exkmc_times, 50)
+    
+    else:
+        total, kmeans, exkmc = run()
+    
+    # plot_power()
+    
 
-        kmeans_start = time.time()
-        k = 14
-        kmeans = KMeans(k, random_state=43, max_iter=500)
-        kmeans.fit(X)
-        k_means_finish = time.time() - kmeans_start
-        print("KMeans Execution Time: %f" % k_means_finish)
-        
-        clusters = kmeans.cluster_centers_
-        
+def run():
+    start = time.time()
+    frame = pd.read_csv(r"Data/Mental_Health_Cleaned.csv")
 
-        start_ExKMC = time.time()
-        tree = Tree.Tree(k=k)
-        tree.fit(X, clusters, kmeans)
-        tree.plot(filename="software_implementation", feature_names=X.columns)
-        finish_ExKMC = time.time() - start_ExKMC
-        print("ExKMC Execution Time: %f" % finish_ExKMC)
-        
-        finish = time.time() - start
-        print("Total Execution Time: %f " % finish)
-        
-        total_times.append(finish)
-        k_means_times.append(k_means_finish)
-        exkmc_times.append(finish_ExKMC)
-        Image(filename="software_implementation.gv.png")
+    X = frame.drop('MH1', axis=1)
+
+    kmeans_start = time.time()
+    k = 14
+    kmeans = KMeans(k, random_state=43, max_iter=500)
+    kmeans.fit(X)
+    k_means_finish = time.time() - kmeans_start
+    print("KMeans Execution Time: %f" % k_means_finish)
     
-    # tot = {
-    #     "title": 'Time to Execute Script Over 50 Iterations', 
-    #     "data": total_times,
-    # }
-    # km = {
-    #     "title": 'Time to Execute KMeans Algorithm Over 50 Iterations',
-    #     "data": k_means_times,
-    # }
-    # ekmc = {
-    #     "title": 'Time to Execute ExKMC Algorithm Over 50 Iterations',
-    #     "data": exkmc_times,
-    # }
+    clusters = kmeans.cluster_centers_
+    # clusters = clusters.astype('int16')
+    # print(clusters.astype('int16'))
+
+    start_ExKMC = time.time()
+    tree = Tree.Tree(k=k)
+    tree.fit(X, clusters, kmeans)
+    tree.plot(filename="software_implementation", feature_names=X.columns)
+    finish_ExKMC = time.time() - start_ExKMC
+    print("ExKMC Execution Time: %f" % finish_ExKMC)
     
-    plot(total_times,k_means_times,exkmc_times)
+    finish = time.time() - start
+    print("Total Execution Time: %f " % finish)
     
-def plot(total, kmeans, exkmc):
+    
+    # Image(filename="software_implementation.gv.png")
+    
+    return finish, k_means_finish, finish_ExKMC    
+
+def plot(total, kmeans, exkmc, steps):
     fig, ax = plt.subplots()
 
-    ax.plot(np.arange(0, 50, 1), total)
+    ax.plot(np.arange(0, steps, 1), total)
 
     ax.set(xlabel='Iteration', ylabel='Time (s)',
-        title=)
+        title="Time to Execute Explainable ML Over %s Iterations" % steps)
     ax.grid()
 
     fig.savefig("total_time.png")
@@ -81,10 +83,10 @@ def plot(total, kmeans, exkmc):
     
     fig, ax = plt.subplots()
 
-    ax.plot(np.arange(0, 50, 1), kmeans)
+    ax.plot(np.arange(0, steps, 1), kmeans)
 
     ax.set(xlabel='Iteration', ylabel='Time (s)',
-           title='Time to Execute KMeans Subprocess Over 50 Iterations')
+           title='Time to Execute KMeans Subprocess Over %s Iterations' % steps)
     ax.grid()
 
     fig.savefig("kmeans.png")
@@ -94,10 +96,10 @@ def plot(total, kmeans, exkmc):
     
     fig, ax = plt.subplots()
 
-    ax.plot(np.arange(0, 50, 1), exkmc)
+    ax.plot(np.arange(0, steps, 1), exkmc)
 
     ax.set(xlabel='Iteration',ylabel='IterationTime (s)', 
-           title='Time to Execute ExKMC Subprocess Over 50 Iterations')
+           title='Time to Execute ExKMC Subprocess Over %s Iterations' % steps)
     ax.grid()
 
     fig.savefig("exkmc.png")
@@ -105,7 +107,22 @@ def plot(total, kmeans, exkmc):
     print(statistics.mean(exkmc))
     print(statistics.stdev(exkmc))
 
-    
+def plot_power():
+    frame = pd.read_csv(r"PowerData/PwrData.csv")
+    fig, ax = plt.subplots()
+
+    ax.plot(frame["System Time"], frame["Processor Power_0(Watt)"])
+
+    ax.set(xlabel='Time', ylabel='Power (W)',
+        title="Power Required to Execute Explainable ML Over %s Measurements" % len(frame["System Time"]))
+    start, end = ax.get_xlim()
+    ax.xaxis.set_ticks(np.arange(start, end, 50))
+    # ax.grid()
+
+    fig.savefig("total_time.png")
+    plt.show()
+
+
         
 if __name__ == "__main__":
     main()
