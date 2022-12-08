@@ -123,13 +123,14 @@ class Tree:
                 print('Finding %d-means' % self.k)
             kmeans = KMeans(self.k, verbose=self.verbose, random_state=self.random_state, n_init=1, max_iter=40)
             kmeans.fit(x_data)
+            self.all_centers = kmeans.cluster_centers_
         else:
             assert kmeans.n_clusters == self.k
+            self.all_centers = clusters
 
         y = np.array(kmeans.predict(x_data), dtype=np.int32)
 
         # self.all_centers = np.array(kmeans.cluster_centers_, dtype=np.float64)
-        self.all_centers = clusters
 
         if self.base_tree == "IMM":
             self.tree = self._build_tree(x_data, y,
