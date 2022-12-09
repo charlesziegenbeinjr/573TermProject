@@ -46,6 +46,7 @@ def run():
     k = 14
     kmeans = KMeans(k, random_state=43, max_iter=500)
     kmeans.fit(X)
+    y = kmeans.predict(X)
     k_means_finish = time.time() - kmeans_start
     print("KMeans Execution Time: %f" % k_means_finish)
     
@@ -55,7 +56,7 @@ def run():
 
     start_ExKMC = time.time()
     tree = Tree.Tree(k=k)
-    tree.fit(X, clusters, kmeans)
+    tree.fit(X, clusters,y)
     tree.plot(filename="software_implementation", feature_names=X.columns)
     finish_ExKMC = time.time() - start_ExKMC
     print("ExKMC Execution Time: %f" % finish_ExKMC)
