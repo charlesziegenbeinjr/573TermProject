@@ -56,7 +56,7 @@ def run():
 
     start_ExKMC = time.time()
     tree = Tree.Tree(k=k)
-    tree.fit(X, clusters,y)
+    tree.fit(X,clusters,y,True)
     tree.plot(filename="software_implementation", feature_names=X.columns)
     finish_ExKMC = time.time() - start_ExKMC
     print("ExKMC Execution Time: %f" % finish_ExKMC)

@@ -108,7 +108,7 @@ class Tree:
 
                 return node
 
-    def fit(self, x_data, clusters, predicted, kmeans=None):
+    def fit(self, x_data, clusters, predicted, hardware_accel, kmeans=None):
         """
         Build a threshold tree from the training set x_data.
         :param x_data: The training input samples.
@@ -117,18 +117,20 @@ class Tree:
         """
 
         x_data = convert_input(x_data)
-
-        # if kmeans is None:
-        #     if self.verbose > 0:
-        #         print('Finding %d-means' % self.k)
-        #     kmeans = KMeans(self.k, verbose=self.verbose, random_state=self.random_state, n_init=1, max_iter=40)
-        #     kmeans.fit(x_data)
-        #     self.all_centers = kmeans.cluster_centers_
-        # else:
-        #     assert kmeans.n_clusters == self.k
+        if hardware_accel is False:
+            if kmeans is None:
+                if self.verbose > 0:
+                    print('Finding %d-means' % self.k)
+                kmeans = KMeans(self.k, verbose=self.verbose, random_state=self.random_state, n_init=1, max_iter=40)
+                kmeans.fit(x_data)
+                self.all_centers = kmeans.cluster_centers_
+                y = np.array(kmeans.predict(x_data), dtype=np.int32)
+            else:
+                assert kmeans.n_clusters == self.k
+        else:
+            y = predicted
         self.all_centers = clusters
 
-        # y = np.array(kmeans.predict(x_data), dtype=np.int32)
         y = predicted
 
         # self.all_centers = np.array(kmeans.cluster_centers_, dtype=np.float64)
