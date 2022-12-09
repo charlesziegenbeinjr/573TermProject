@@ -108,7 +108,7 @@ class Tree:
 
                 return node
 
-    def fit(self, x_data, clusters, predicted, hardware_accel, kmeans=None):
+    def fit(self, x_data, clusters, predicted=None, hardware_accel, kmeans=None):
         """
         Build a threshold tree from the training set x_data.
         :param x_data: The training input samples.

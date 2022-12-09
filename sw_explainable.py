@@ -45,12 +45,13 @@ def run():
     kmeans_start = time.time()
     k = 14
     kmeans = KMeans(k, random_state=43, max_iter=500)
-    kmeans.fit(X)
-    y = kmeans.predict(X)
+    # kmeans.fit(X)
+    # y = kmeans.predict(X)
     k_means_finish = time.time() - kmeans_start
     print("KMeans Execution Time: %f" % k_means_finish)
     
-    clusters = kmeans.cluster_centers_
+    clusters = np.array([[6,0,3,4,1,0,0,0,0,0,0,1,0,0,0,0],[1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],[12,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],[10,3,3,4,1,0,0,0,0,0,2,1,0,0,1,0],[1,2,3,4,1,0,0,0,0,0,1,1,0,0,1,1],[11,0,3,4,1,0,0,0,0,0,0,1,0,0,0,0],[11,0,2,3,1,0,0,0,0,0,0,1,5,4,1,0],[1,0,3,4,1,0,0,0,0,0,0,1,0,0,0,0],[5,0,0,0,1,0,0,0,0,0,0,1,4,1,1,0],[11,3,3,4,1,0,1,0,0,0,2,1,4,1,1,2],[6,0,3,4,1,0,0,0,0,0,0,1,3,0,1,0],[6,1,3,4,1,0,0,0,0,0,0,1,5,4,1,1],[5,3,3,4,1,0,0,0,0,0,1,1,3,0,1,1],[6,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0]])
+    kmeans.cluster_centers_ = clusters
     print(clusters.astype('int16'))
     # clusters = clusters.astype('int16')
 
@@ -69,7 +70,7 @@ def run():
     
     return finish, k_means_finish, finish_ExKMC    
 
-def plot(total, kmeans, exkmc, steps):
+,ef plot(total, kmeans, exkmc, steps):
     fig, ax = plt.subplots()
 
     ax.plot(np.arange(0, steps, 1), total)
