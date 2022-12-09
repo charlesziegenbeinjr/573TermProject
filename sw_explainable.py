@@ -4,16 +4,13 @@ import sys
 import numpy as np
 import pandas as pd
 
-from ExplainableKMC import Tree
 # from IPython.display import Image
+from ExplainableKMC import Tree
 from sklearn.cluster import KMeans
 import time
 import matplotlib.pyplot as plt
 import statistics
-os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
-
-
-
+# os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
 
 def main():
     
@@ -21,6 +18,7 @@ def main():
     k_means_times = []
     exkmc_times = []
 
+    # Loop for testing time over 50 Runs
     if sys.argv[1] is True:
         for i in range(50):
             total, kmeans, exkmc = run()
@@ -31,34 +29,45 @@ def main():
     
     else:
         total, kmeans, exkmc = run()
-    
     # plot_power()
     
-
+# Run KMC / ExKMC Pipeline 
 def run():
     start = time.time()
     frame = pd.read_csv(r"Data/Mental_Health_Cleaned_524288.csv")
 
     X = frame.drop('MH1', axis=1)
-    # X = frame
 
+    
     kmeans_start = time.time()
     k = 14
-    kmeans = KMeans(k, random_state=43, max_iter=500)
-    # kmeans.fit(X)
-    # y = kmeans.predict(X)
-    k_means_finish = time.time() - kmeans_start
-    print("KMeans Execution Time: %f" % k_means_finish)
     
-    clusters = np.array([[6,0,3,4,1,0,0,0,0,0,0,1,0,0,0,0],[1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],[12,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],[10,3,3,4,1,0,0,0,0,0,2,1,0,0,1,0],[1,2,3,4,1,0,0,0,0,0,1,1,0,0,1,1],[11,0,3,4,1,0,0,0,0,0,0,1,0,0,0,0],[11,0,2,3,1,0,0,0,0,0,0,1,5,4,1,0],[1,0,3,4,1,0,0,0,0,0,0,1,0,0,0,0],[5,0,0,0,1,0,0,0,0,0,0,1,4,1,1,0],[11,3,3,4,1,0,1,0,0,0,2,1,4,1,1,2],[6,0,3,4,1,0,0,0,0,0,0,1,3,0,1,0],[6,1,3,4,1,0,0,0,0,0,0,1,5,4,1,1],[5,3,3,4,1,0,0,0,0,0,1,1,3,0,1,1],[6,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0]])
-    kmeans.cluster_centers_ = clusters
-    print(clusters.astype('int16'))
-    # clusters = clusters.astype('int16')
+    kmeans = KMeans(k, random_state=43, max_iter=500)
+    if sys.argv[2] is False: # We are not running based off of centroids from the ASIC
+        kmeans.fit(X)
+        clusters = kmeans.cluster_centers_
+        k_means_finish = time.time() - kmeans_start
+        print("KMeans Execution Time: %f" % k_means_finish)
+    
+    clusters = np.array([[6, 3, 4, 3, 1, 0, 0, 0, 1, 0, 4, 2, 1, 1, 1, 0],
+                         [7, 3, 3, 4, 1, 0, 0, 0, 1, 0, 0, 3, 1, 5, 1, 1],
+                         [6, 0, 4, 4, 2, 0, 0, 0, 1, 0, 2, 2, 3, 1, 0, 0],
+                         [4, 2, 4, 4, 1, 0, 0, 0, 1, 0, 4, 2, 1, 5, 0, 0],
+                         [11, 4, 3, 3, 1, 0, 0, 0, 1, 1, 4, 0, 2, 1, 1, 0],
+                         [11, 0, 4, 3, 2, 0, 1, 0, 1, 0, 3, 0, 0, 5, 2, 1],
+                         [9, 3, 4, 4, 1, 0, 0, 0, 1, 0, 4, 1, 1, 2, 1, 0],
+                         [5, 2, 4, 3, 1, 0, 0, 0, 1, 0, 2, 3, 1, 1, 1, 0], 
+                         [7, 3, 3, 4, 1, 0, 0, 0, 1, 0, 0, 2, 2, 5, 1, 1],
+                         [6, 3, 4, 4, 1, 0, 0, 0, 1, 0, 0, 1, 1, 5, 1, 1],
+                         [6, 4, 4, 4, 1, 0, 0, 1, 0, 0, 6, 0, 3, 1, 1, 0],
+                         [6, 3, 4, 3, 2, 0, 0, 1, 0, 1, 2, 2, 6, 0, 0, 0],
+                         [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 0, 0, 0, 0],
+                         [7, 3, 3, 4, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0]], dtype=np.double)
 
     start_ExKMC = time.time()
     tree = Tree.Tree(k=k)
-    tree.fit(X,clusters,y,True)
-    tree.plot(filename="software_implementation", feature_names=X.columns)
+    tree.fit(X,clusters,True,kmeans)
+    tree.plot(filename="hardware_software_hybrid", feature_names=X.columns)
     finish_ExKMC = time.time() - start_ExKMC
     print("ExKMC Execution Time: %f" % finish_ExKMC)
     
@@ -70,7 +79,7 @@ def run():
     
     return finish, k_means_finish, finish_ExKMC    
 
-,ef plot(total, kmeans, exkmc, steps):
+def plot(total, kmeans, exkmc, steps):
     fig, ax = plt.subplots()
 
     ax.plot(np.arange(0, steps, 1), total)
