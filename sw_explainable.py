@@ -37,7 +37,7 @@ def main():
 
 def run():
     start = time.time()
-    frame = pd.read_csv(r"Data/Mental_Health_Cleaned.csv")
+    frame = pd.read_csv(r"Data/Mental_Health_Cleaned_524288.csv")
 
     X = frame.drop('MH1', axis=1)
     # X = frame
@@ -50,8 +50,8 @@ def run():
     print("KMeans Execution Time: %f" % k_means_finish)
     
     clusters = kmeans.cluster_centers_
-    clusters = clusters.astype('int16')
-    print(clusters.astype('int16'))
+    # clusters = clusters.astype('int16')
+    # print(clusters.astype('int16'))
 
     start_ExKMC = time.time()
     tree = Tree.Tree(k=k)
