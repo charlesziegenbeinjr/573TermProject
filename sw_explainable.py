@@ -51,8 +51,8 @@ def run():
     print("KMeans Execution Time: %f" % k_means_finish)
     
     clusters = kmeans.cluster_centers_
+    print(clusters.astype('int16'))
     # clusters = clusters.astype('int16')
-    # print(clusters.astype('int16'))
 
     start_ExKMC = time.time()
     tree = Tree.Tree(k=k)
