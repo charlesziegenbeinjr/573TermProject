@@ -1,0 +1,7 @@
+To simulate the kmeans clustering asic in waveform view, type:
+    
+    make verdi
+    
+into the terminal.
+
+This folder has to be in the afs space on caen in order to access the proper resources to simulate

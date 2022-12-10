@@ -108,11 +108,16 @@ class Tree:
 
                 return node
 
-    def fit(self, x_data, clusters, hardware_accel,kmeans):
+    def fit(self, x_data, clusters, hardware_accel, kmeans):
         """
         Build a threshold tree from the training set x_data.
         :param x_data: The training input samples.
+        :param clusters: Clusters computed by the Hardware are passed to the Tree fit()
+        :param hardware_accel: Boolean value indicating whether or not hardware 
+        acceleration was invoked,. Directs control flow to avoid training a model if clusters
+        are already provided.
         :param kmeans: Trained model of k-means clustering over the training data.
+        Not required if we are accelerating hardware.
         :return: Fitted threshold tree.
         """
 
