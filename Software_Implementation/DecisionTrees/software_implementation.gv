@@ -1,0 +1,96 @@
+digraph ClusteringTree {
+n_0 [label="DETNLF <= 3.000
+samples=\524288"];
+n_1 [label="EDUC <= 1.000
+samples=\484412"];
+n_2 [label="AGE <= 8.000
+samples=\39876"];
+n_3 [label="RACE <= 1.000
+samples=\388164"];
+n_4 [label="AGE <= 8.000
+samples=\96248"];
+n_5 [label="11
+samples=\19536
+mistakes=\3831"];
+n_6 [label="6
+samples=\20340
+mistakes=\4067"];
+n_7 [label="AGE <= 9.000
+samples=\157445"];
+n_8 [label="AGE <= 9.000
+samples=\230719"];
+n_9 [label="EMPLOY <= 0.020
+samples=\62598"];
+n_10 [label="EMPLOY <= 2.000
+samples=\33650"];
+n_11 [label="EMPLOY <= 2.000
+samples=\121430"];
+n_12 [label="2
+samples=\36015
+mistakes=\43"];
+n_13 [label="EMPLOY <= 1.000
+samples=\168145"];
+n_14 [label="5
+samples=\62574
+mistakes=\3451"];
+n_15 [label="4
+samples=\34424
+mistakes=\4035"];
+n_16 [label="12
+samples=\28174
+mistakes=\1875"];
+n_17 [label="3
+samples=\12908
+mistakes=\553"];
+n_18 [label="9
+samples=\20742
+mistakes=\54"];
+n_19 [label="AGE <= 4.000
+samples=\108920"];
+n_20 [label="8
+samples=\12510
+mistakes=\1088"];
+n_21 [label="AGE <= 4.000
+samples=\137670"];
+n_22 [label="10
+samples=\30475
+mistakes=\509"];
+n_23 [label="1
+samples=\66980
+mistakes=\306"];
+n_24 [label="13
+samples=\41940
+mistakes=\269"];
+n_25 [label="7
+samples=\69262
+mistakes=\302"];
+n_26 [label="0
+samples=\68408
+mistakes=\65"];
+n_0 -> n_1;
+n_0 -> n_2;
+n_1 -> n_3;
+n_1 -> n_4;
+n_2 -> n_5;
+n_2 -> n_6;
+n_3 -> n_7;
+n_3 -> n_8;
+n_4 -> n_9;
+n_4 -> n_10;
+n_7 -> n_11;
+n_7 -> n_12;
+n_8 -> n_13;
+n_8 -> n_14;
+n_9 -> n_15;
+n_9 -> n_16;
+n_10 -> n_17;
+n_10 -> n_18;
+n_11 -> n_19;
+n_11 -> n_20;
+n_13 -> n_21;
+n_13 -> n_22;
+n_19 -> n_23;
+n_19 -> n_24;
+n_21 -> n_25;
+n_21 -> n_26;
+}

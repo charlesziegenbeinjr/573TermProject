@@ -1,2 +1,0 @@
-from cut_finder import get_min_mistakes_cut
-from cut_finder import get_min_surrogate_cut
